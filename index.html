@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Mi IA</title>
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#1b1b1f" />
+<style>
+  :root {
+    --bg: #f6f5f2;
+    --panel: #ffffff;
+    --ink: #1b1b1f;
+    --muted: #6b6b70;
+    --accent: #2f6f4f;
+    --accent-ink: #ffffff;
+    --bubble-user: #e7e3da;
+    --border: #e2e0da;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17171a;
+      --panel: #1f1f23;
+      --ink: #eceae4;
+      --muted: #9a9a9f;
+      --accent: #5fae82;
+      --accent-ink: #0d1410;
+      --bubble-user: #2a2a2f;
+      --border: #2c2c31;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    height: 100%;
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  header {
+    padding: 14px 16px calc(14px + env(safe-area-inset-top, 0px));
+    padding-top: calc(14px + env(safe-area-inset-top, 0px));
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  header h1 {
+    font-size: 17px;
+    margin: 0;
+    font-weight: 600;
+  }
+  .search-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  #chat {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .msg {
+    max-width: 82%;
+    padding: 10px 13px;
+    border-radius: 14px;
+    line-height: 1.45;
+    font-size: 15px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .msg.user {
+    align-self: flex-end;
+    background: var(--bubble-user);
+    border-bottom-right-radius: 4px;
+  }
+  .msg.bot {
+    align-self: flex-start;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-bottom-left-radius: 4px;
+  }
+  .msg.error {
+    align-self: flex-start;
+    background: transparent;
+    border: 1px solid #c0392b;
+    color: #c0392b;
+  }
+  #empty {
+    margin: auto;
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+    max-width: 260px;
+  }
+  form {
+    display: flex;
+    gap: 8px;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+  }
+  textarea {
+    flex: 1;
+    resize: none;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    color: var(--ink);
+    padding: 10px 12px;
+    font-size: 15px;
+    font-family: inherit;
+    max-height: 120px;
+  }
+  button {
+    border: none;
+    border-radius: 12px;
+    background: var(--accent);
+    color: var(--accent-ink);
+    padding: 0 18px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  button:disabled { opacity: 0.5; }
+  #config {
+    padding: 8px 16px;
+    font-size: 12px;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    display: none;
+    gap: 6px;
+  }
+  #config.show { display: flex; }
+  #config input {
+    flex: 1;
+    font-size: 12px;
+    padding: 4px 6px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    color: var(--ink);
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Mi IA</h1>
+    <label class="search-toggle">
+      <input type="checkbox" id="searchToggle" />
+      Buscar en internet
+    </label>
+  </header>
+
+  <div id="chat">
+    <div id="empty">Escribí algo para empezar. Puedo programar, redactar documentos y, si activás "Buscar en internet", consultar la web.</div>
+  </div>
+
+  <form id="form">
+    <textarea id="input" rows="1" placeholder="Escribí tu mensaje..."></textarea>
+    <button id="send" type="submit">Enviar</button>
+  </form>
+
+<script>
+  const chatEl = document.getElementById("chat");
+  const emptyEl = document.getElementById("empty");
+  const formEl = document.getElementById("form");
+  const inputEl = document.getElementById("input");
+  const sendBtn = document.getElementById("send");
+  const searchToggle = document.getElementById("searchToggle");
+  // Worker de Cloudflare ya configurado para esta versión de la app.
+  const WORKER_URL = "https://nebula.jeronimocaroalfonso3.workers.dev";
+
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem("chatHistory") || "[]"); } catch {}
+  if (history.length) {
+    emptyEl.remove();
+    history.forEach((h) => addBubble(h.role === "user" ? "user" : "bot", h.text));
+  }
+
+  function saveHistory() {
+    try { localStorage.setItem("chatHistory", JSON.stringify(history)); } catch {}
+  }
+
+  function addBubble(kind, text) {
+    const div = document.createElement("div");
+    div.className = "msg " + kind;
+    div.textContent = text;
+    chatEl.appendChild(div);
+    chatEl.scrollTop = chatEl.scrollHeight;
+    return div;
+  }
+
+  inputEl.addEventListener("input", () => {
+    inputEl.style.height = "auto";
+    inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + "px";
+  });
+
+  formEl.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const message = inputEl.value.trim();
+    if (!message) return;
+
+    if (emptyEl.parentNode) emptyEl.remove();
+    addBubble("user", message);
+    history.push({ role: "user", text: message });
+    saveHistory();
+
+    inputEl.value = "";
+    inputEl.style.height = "auto";
+    sendBtn.disabled = true;
+    const thinking = addBubble("bot", "Pensando...");
+
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message,
+          history: history.slice(0, -1), // sin el mensaje que acaba de mandar
+          useSearch: searchToggle.checked,
+        }),
+      });
+      const data = await res.json();
+      thinking.remove();
+
+      if (!res.ok || data.error) {
+        addBubble("error", data.error || "Ocurrió un error.");
+      } else {
+        addBubble("bot", data.reply);
+        history.push({ role: "assistant", text: data.reply });
+        saveHistory();
+      }
+    } catch (err) {
+      thinking.remove();
+      addBubble("error", "No pude conectar con el servidor. Revisá el Worker URL.");
+    } finally {
+      sendBtn.disabled = false;
+    }
+  });
+
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  }
+</script>
+</body>
+</html>
