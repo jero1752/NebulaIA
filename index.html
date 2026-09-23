@@ -1,261 +1,44 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Mi IA</title>
-<link rel="manifest" href="manifest.json" />
-<meta name="theme-color" content="#1b1b1f" />
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10131a"><meta name="description" content="NebulaIA — chat, archivos, creación y edición asistida por IA">
+<title>NebulaIA</title>
 <style>
-  :root {
-    --bg: #f6f5f2;
-    --panel: #ffffff;
-    --ink: #1b1b1f;
-    --muted: #6b6b70;
-    --accent: #2f6f4f;
-    --accent-ink: #ffffff;
-    --bubble-user: #e7e3da;
-    --border: #e2e0da;
-    box-sizing: border-box;
-    padding-top: env(safe-area-inset-top, 0px);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #17171a;
-      --panel: #1f1f23;
-      --ink: #eceae4;
-      --muted: #9a9a9f;
-      --accent: #5fae82;
-      --accent-ink: #0d1410;
-      --bubble-user: #2a2a2f;
-      --border: #2c2c31;
-    }
-  }
-  * { box-sizing: border-box; }
-  html, body {
-    height: 100%;
-    margin: 0;
-    background: var(--bg);
-    color: var(--ink);
-    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-  }
-  body {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-  header {
-    padding: 14px 16px calc(14px + env(safe-area-inset-top, 0px));
-    padding-top: calc(14px + env(safe-area-inset-top, 0px));
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-  }
-  header h1 {
-    font-size: 17px;
-    margin: 0;
-    font-weight: 600;
-  }
-  .search-toggle {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    color: var(--muted);
-  }
-  #chat {
-    flex: 1;
-    overflow-y: auto;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .msg {
-    max-width: 82%;
-    padding: 10px 13px;
-    border-radius: 14px;
-    line-height: 1.45;
-    font-size: 15px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-  }
-  .msg.user {
-    align-self: flex-end;
-    background: var(--bubble-user);
-    border-bottom-right-radius: 4px;
-  }
-  .msg.bot {
-    align-self: flex-start;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-bottom-left-radius: 4px;
-  }
-  .msg.error {
-    align-self: flex-start;
-    background: transparent;
-    border: 1px solid #c0392b;
-    color: #c0392b;
-  }
-  #empty {
-    margin: auto;
-    text-align: center;
-    color: var(--muted);
-    font-size: 14px;
-    max-width: 260px;
-  }
-  form {
-    display: flex;
-    gap: 8px;
-    padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
-    border-top: 1px solid var(--border);
-    background: var(--bg);
-  }
-  textarea {
-    flex: 1;
-    resize: none;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    background: var(--panel);
-    color: var(--ink);
-    padding: 10px 12px;
-    font-size: 15px;
-    font-family: inherit;
-    max-height: 120px;
-  }
-  button {
-    border: none;
-    border-radius: 12px;
-    background: var(--accent);
-    color: var(--accent-ink);
-    padding: 0 18px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  button:disabled { opacity: 0.5; }
-  #config {
-    padding: 8px 16px;
-    font-size: 12px;
-    color: var(--muted);
-    border-bottom: 1px solid var(--border);
-    display: none;
-    gap: 6px;
-  }
-  #config.show { display: flex; }
-  #config input {
-    flex: 1;
-    font-size: 12px;
-    padding: 4px 6px;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    background: var(--panel);
-    color: var(--ink);
-  }
+:root{--bg:#090b10;--panel:#11151d;--panel2:#171c26;--line:#252c38;--text:#f3f5f7;--muted:#9ba5b5;--accent:#8b7cff;--accent2:#5de1c4;--danger:#ff7272}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0,#1b1a36 0,#090b10 35%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;height:100vh;overflow:hidden}.app{display:grid;grid-template-columns:245px 1fr;height:100vh}.side{border-right:1px solid var(--line);background:#0c0f15;padding:18px;display:flex;flex-direction:column;gap:12px}.brand{font-size:22px;font-weight:800;letter-spacing:.3px}.brand span{color:var(--accent)}.sub{font-size:12px;color:var(--muted);margin-top:-8px}.nav button,.newchat{width:100%;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:11px;border-radius:11px;text-align:left;cursor:pointer;margin-top:6px}.nav button.active{border-color:#6259b8;background:#17152b}.newchat{background:var(--accent);color:#fff;border:0;font-weight:700}.status{margin-top:auto;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:12px;color:var(--muted)}main{display:flex;flex-direction:column;min-width:0}.top{height:64px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 24px}.top h1{font-size:18px;margin:0}.provider{background:var(--panel);border:1px solid var(--line);color:var(--text);border-radius:9px;padding:8px}.view{display:none;height:calc(100vh - 64px);overflow:auto}.view.active{display:flex;flex-direction:column}.chat{max-width:920px;width:100%;margin:auto;padding:28px 20px 150px}.msg{display:flex;margin:14px 0}.msg.user{justify-content:flex-end}.bubble{max-width:82%;padding:12px 15px;border-radius:16px;white-space:pre-wrap;line-height:1.5}.assistant .bubble{background:var(--panel);border:1px solid var(--line)}.user .bubble{background:#5148a8}.composer{position:fixed;bottom:0;left:245px;right:0;padding:16px;background:linear-gradient(transparent,var(--bg) 25%)}.compose-inner{max-width:920px;margin:auto;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:10px}.tools{display:flex;align-items:center;gap:10px;margin-bottom:8px;color:var(--muted);font-size:12px}.tools label{display:flex;align-items:center;gap:6px}.inputrow{display:flex;gap:8px}.inputrow textarea{flex:1;background:transparent;color:var(--text);border:0;outline:0;resize:none;min-height:48px;max-height:180px;padding:10px;font:inherit}.send{border:0;border-radius:12px;background:var(--accent);color:#fff;padding:0 18px;font-weight:700;cursor:pointer}.dropzone{border:1px dashed #3a4353;background:#0e1219;border-radius:18px;padding:30px;text-align:center;margin:25px auto;max-width:900px;width:calc(100% - 40px)}.dropzone input{display:none}.files{max-width:900px;width:calc(100% - 40px);margin:0 auto 40px}.filecard{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);background:var(--panel);padding:14px;border-radius:12px;margin:8px 0}.muted{color:var(--muted);font-size:13px}.actions{display:flex;gap:8px}.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:9px 12px;border-radius:9px;cursor:pointer}.create{max-width:900px;width:calc(100% - 40px);margin:28px auto}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.card{border:1px solid var(--line);background:var(--panel);border-radius:16px;padding:18px}.card h3{margin-top:0}.card button{width:100%;margin-top:12px}.editor{width:100%;min-height:220px;background:#0d1118;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:14px;resize:vertical}.toast{position:fixed;right:18px;top:76px;background:var(--panel2);border:1px solid var(--line);padding:11px 14px;border-radius:10px;display:none}.empty{color:var(--muted);text-align:center;padding:70px 20px}.spinner{opacity:.7;font-style:italic}@media(max-width:760px){.app{grid-template-columns:1fr}.side{display:none}.composer{left:0}.bubble{max-width:92%}.top{padding:0 14px}}
 </style>
 </head>
 <body>
-  <header>
-    <h1>Mi IA</h1>
-    <label class="search-toggle">
-      <input type="checkbox" id="searchToggle" />
-      Buscar en internet
-    </label>
-  </header>
-
-  <div id="chat">
-    <div id="empty">Escribí algo para empezar. Puedo programar, redactar documentos y, si activás "Buscar en internet", consultar la web.</div>
-  </div>
-
-  <form id="form">
-    <textarea id="input" rows="1" placeholder="Escribí tu mensaje..."></textarea>
-    <button id="send" type="submit">Enviar</button>
-  </form>
-
+<div class="app">
+<aside class="side"><div class="brand">Nebula<span>IA</span></div><div class="sub">Tu espacio de IA personal</div><button class="newchat" id="newChat">＋ Nuevo chat</button><nav class="nav"><button data-view="chat" class="active">💬 Chat</button><button data-view="files">📁 Archivos</button><button data-view="create">✦ Crear documentos</button></nav><div class="status">⚡ Contexto optimizado<br><span>Usa solo lo necesario para ahorrar tokens.</span></div></aside>
+<main><header class="top"><h1 id="title">Chat</h1><select class="provider" id="provider"><option value="auto">Auto</option><option value="gemini">Gemini</option><option value="openai">OpenAI</option><option value="anthropic">Claude</option><option value="xai">Grok</option></select></header>
+<section id="chat" class="view active"><div id="messages" class="chat"><div class="empty">Hola. Soy <b>NebulaIA</b>.<br>Podés preguntarme, adjuntar archivos o crear documentos.</div></div><div class="composer"><div class="compose-inner"><div class="tools"><label>📎 <input id="attach" type="file" multiple accept=".txt,.md,.csv,.json,.pdf,.docx,.xlsx,.xls,.png,.jpg,.jpeg">Adjuntar</label><label><input id="search" type="checkbox"> Buscar en internet</label><span id="attachedCount"></span></div><div class="inputrow"><textarea id="input" placeholder="Escribí tu mensaje…" rows="1"></textarea><button class="send" id="send">Enviar</button></div></div></div></section>
+<section id="files" class="view"><div class="dropzone"><h2>📁 Centro de archivos</h2><p class="muted">TXT, MD, CSV, JSON, PDF, DOCX, XLSX e imágenes. Los archivos de texto se analizan directamente; los demás se procesan cuando el navegador dispone del lector correspondiente.</p><label class="btn">Seleccionar archivos<input id="fileInput" type="file" multiple accept=".txt,.md,.csv,.json,.pdf,.docx,.xlsx,.xls,.png,.jpg,.jpeg"></label></div><div id="fileList" class="files"></div></section>
+<section id="create" class="view"><div class="create"><h2>✦ Crear</h2><p class="muted">Generá contenido con NebulaIA y descargalo en formatos comunes.</p><div class="grid"><div class="card"><h3>Documento / APA</h3><p class="muted">Pegá instrucciones y contenido. NebulaIA puede organizar portada, títulos, referencias y estructura solicitada.</p><textarea id="docPrompt" class="editor" placeholder="Ej.: crea un trabajo sobre... con estructura APA 7..."></textarea><button class="btn" id="generateDoc">Generar</button></div><div class="card"><h3>Descargar texto</h3><p class="muted">Convertí el resultado en TXT, Markdown o JSON.</p><div class="actions"><button class="btn" data-export="txt">TXT</button><button class="btn" data-export="md">MD</button><button class="btn" data-export="json">JSON</button></div></div><div class="card"><h3>DOCX</h3><p class="muted">Generá un .docx desde el último resultado usando la librería del navegador.</p><button class="btn" id="docxBtn">Descargar DOCX</button></div></div><textarea id="result" class="editor" style="margin-top:18px;min-height:360px" placeholder="Aquí aparecerá el documento generado…"></textarea></div></section>
+</main></div><div id="toast" class="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/docx@9.5.1/build/index.umd.js"></script>
 <script>
-  const chatEl = document.getElementById("chat");
-  const emptyEl = document.getElementById("empty");
-  const formEl = document.getElementById("form");
-  const inputEl = document.getElementById("input");
-  const sendBtn = document.getElementById("send");
-  const searchToggle = document.getElementById("searchToggle");
-  // Worker de Cloudflare ya configurado para esta versión de la app.
-  const WORKER_URL = "https://nebula.jeronimocaroalfonso3.workers.dev";
-
-  let history = [];
-  try { history = JSON.parse(localStorage.getItem("chatHistory") || "[]"); } catch {}
-  if (history.length) {
-    emptyEl.remove();
-    history.forEach((h) => addBubble(h.role === "user" ? "user" : "bot", h.text));
-  }
-
-  function saveHistory() {
-    try { localStorage.setItem("chatHistory", JSON.stringify(history)); } catch {}
-  }
-
-  function addBubble(kind, text) {
-    const div = document.createElement("div");
-    div.className = "msg " + kind;
-    div.textContent = text;
-    chatEl.appendChild(div);
-    chatEl.scrollTop = chatEl.scrollHeight;
-    return div;
-  }
-
-  inputEl.addEventListener("input", () => {
-    inputEl.style.height = "auto";
-    inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + "px";
-  });
-
-  formEl.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const message = inputEl.value.trim();
-    if (!message) return;
-
-    if (emptyEl.parentNode) emptyEl.remove();
-    addBubble("user", message);
-    history.push({ role: "user", text: message });
-    saveHistory();
-
-    inputEl.value = "";
-    inputEl.style.height = "auto";
-    sendBtn.disabled = true;
-    const thinking = addBubble("bot", "Pensando...");
-
-    try {
-      const res = await fetch(WORKER_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message,
-          history: history.slice(0, -1), // sin el mensaje que acaba de mandar
-          useSearch: searchToggle.checked,
-        }),
-      });
-      const data = await res.json();
-      thinking.remove();
-
-      if (!res.ok || data.error) {
-        addBubble("error", data.error || "Ocurrió un error.");
-      } else {
-        addBubble("bot", data.reply);
-        history.push({ role: "assistant", text: data.reply });
-        saveHistory();
-      }
-    } catch (err) {
-      thinking.remove();
-      addBubble("error", "No pude conectar con el servidor. Revisá el Worker URL.");
-    } finally {
-      sendBtn.disabled = false;
-    }
-  });
-
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("sw.js").catch(() => {});
-  }
-</script>
-</body>
-</html>
+const WORKER_URL="https://nebula.jeronimocaroalfonso3.workers.dev";
+const KEY="nebulaHistoryV2", FILEKEY="nebulaFilesV2"; let history=JSON.parse(localStorage.getItem(KEY)||"[]"), files=JSON.parse(localStorage.getItem(FILEKEY)||"[]"), lastResult="";
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+function save(){localStorage.setItem(KEY,JSON.stringify(history.slice(-30)));localStorage.setItem(FILEKEY,JSON.stringify(files));}
+function toast(t){const x=$("#toast");x.textContent=t;x.style.display="block";setTimeout(()=>x.style.display="none",2200)}
+function bubble(role,text){const box=$("#messages");if(box.querySelector('.empty'))box.innerHTML="";const d=document.createElement('div');d.className='msg '+role;const b=document.createElement('div');b.className='bubble';b.textContent=text;d.appendChild(b);box.appendChild(d);box.scrollTop=box.scrollHeight;return b}
+function renderFiles(){const list=$("#fileList");list.innerHTML=files.length?files.map((f,i)=>`<div class="filecard"><div><b>${esc(f.name)}</b><div class="muted">${Math.round(f.size/1024)} KB · ${f.type||'archivo'}</div></div><button class="btn" onclick="removeFile(${i})">Eliminar</button></div>`).join(''):'<div class="empty">No hay archivos guardados en este dispositivo.</div>';$("#attachedCount").textContent=files.length?`${files.length} archivo(s) listo(s)`:''}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+window.removeFile=i=>{files.splice(i,1);save();renderFiles();toast('Archivo eliminado')};
+async function readFile(f){const ext=f.name.split('.').pop().toLowerCase();if(['txt','md','csv','json'].includes(ext))return await f.text();if(ext==='pdf')return '[PDF adjunto: para lectura completa se requiere un lector PDF en el navegador.]';if(['docx','xlsx','xls'].includes(ext))return '[Documento adjunto: el archivo está disponible, pero su contenido no fue extraído en este navegador.]';if(f.type.startsWith('image/'))return '[Imagen adjunta: se conserva como archivo, pero este MVP no hace visión por imagen.]';return '[Archivo adjunto]'}
+async function addFiles(list){for(const f of [...list]){const text=await readFile(f);files.push({name:f.name,size:f.size,type:f.type,text:text.slice(0,12000)});}save();renderFiles();toast('Archivos agregados')}
+$("#attach").onchange=e=>addFiles(e.target.files);$("#fileInput").onchange=e=>addFiles(e.target.files);
+$$('.nav button').forEach(btn=>btn.onclick=()=>{const v=btn.dataset.view;$$('.nav button').forEach(x=>x.classList.toggle('active',x===btn));$$('.view').forEach(x=>x.classList.toggle('active',x.id===v));$("#title").textContent=v==='chat'?'Chat':v==='files'?'Archivos':'Crear documentos';});
+$("#newChat").onclick=()=>{history=[];save();$("#messages").innerHTML='<div class="empty">Nuevo chat listo.</div>';toast('Nuevo chat')};
+async function ask(message){const context=files.map(f=>`### ${f.name}\n${f.text||''}`).join('\n').slice(0,28000);bubble('user',message);const wait=bubble('assistant','Pensando…');wait.classList.add('spinner');try{const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,history:history.slice(-8),fileContext:context,useSearch:$("#search").checked,provider:$("#provider").value})});const data=await res.json();if(!res.ok)throw new Error(data.error||'Error del Worker');wait.classList.remove('spinner');wait.textContent=data.reply||'Sin respuesta';history.push({role:'user',text:message},{role:'assistant',text:data.reply||''});save();}catch(e){wait.classList.remove('spinner');wait.textContent='Error: '+e.message}}
+$("#send").onclick=()=>{const i=$("#input"),m=i.value.trim();if(!m)return;i.value='';ask(m)};$("#input").addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();$("#send").click()}});
+$("#generateDoc").onclick=async()=>{const p=$("#docPrompt").value.trim();if(!p)return toast('Escribí qué documento querés');$("#result").value='Generando…';await askForCreate(p)};
+async function askForCreate(p){try{const context=files.map(f=>`### ${f.name}\n${f.text||''}`).join('\n').slice(0,28000);const r=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:`Creá el documento solicitado. Entregá solo el contenido final, bien estructurado. Solicitud: ${p}`,history:[],fileContext:context,provider:$("#provider").value})});const d=await r.json();if(!r.ok)throw new Error(d.error);lastResult=d.reply||'';$("#result").value=lastResult;toast('Documento generado')}catch(e){$("#result").value='Error: '+e.message}}
+function download(name,type,text){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+$$('[data-export]').forEach(b=>b.onclick=()=>{const t=$("#result").value||lastResult;if(!t)return toast('No hay resultado');const ext=b.dataset.export;if(ext==='json')download('nebula-documento.json','application/json',JSON.stringify({content:t},null,2));else download('nebula-documento.'+ext,ext==='txt'?'text/plain':'text/markdown',t)});
+$("#docxBtn").onclick=async()=>{const text=$("#result").value||lastResult;if(!text)return toast('No hay resultado');if(!window.docx)return toast('No cargó el generador DOCX');const {Document,Packer,Paragraph,TextRun}=window.docx;const paragraphs=text.split(/\n+/).map(line=>new Paragraph({children:[new TextRun(line)]}));const doc=new Document({sections:[{children:paragraphs}]});const blob=await Packer.toBlob(doc);const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='nebula-documento.docx';a.click();toast('DOCX creado')};
+renderFiles();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js');
+</script></body></html>
