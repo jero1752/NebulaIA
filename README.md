@@ -1,4 +1,4 @@
-# NebulaIA v2.3 — archivos inteligentes
+# NebulaIA v2.1
 
 ## Frontend
 Subí el contenido de esta carpeta a GitHub Pages. El frontend ya apunta al Worker:
@@ -56,28 +56,19 @@ El MVP conserva los archivos en el navegador y no intenta subirlos a un servidor
 La recuperación sigue la recomendación oficial de Gemini de usar exponential backoff para errores transitorios como 429 y 503.
 
 
-## Archivos inteligentes v2.3
+## v2.4 — Gemini + OpenAI
 
-NebulaIA ahora puede:
-- leer TXT, MD, CSV, JSON y LOG directamente en el navegador;
-- extraer texto de PDF con PDF.js;
-- extraer texto de DOCX con Mammoth;
-- leer XLSX/XLS y convertir sus hojas a texto tabular con SheetJS;
-- conservar los archivos originales en IndexedDB del navegador;
-- abrir los archivos guardados;
-- analizar un archivo individual desde el botón Analizar;
-- enviar imágenes al Worker como datos multimodales para que Gemini las analice;
-- combinar el texto extraído y las imágenes con la conversación sin subir los archivos a un servidor de almacenamiento.
+Secrets requeridos en Cloudflare:
+- `GEMINI_API_KEY`
+- `OPENAI_API_KEY`
 
-### Dependencias del navegador
-PDF.js, Mammoth y SheetJS se cargan desde CDN únicamente cuando hacen falta. Por eso el primer procesamiento de un PDF/DOCX/XLSX requiere conexión a internet. Los archivos y el texto extraído permanecen localmente en el navegador.
+Opcionales:
+- `OPENAI_MODEL` (por defecto: `gpt-5.6-luna`)
+- `OPENAI_MAX_OUTPUT_TOKENS` (por defecto: `3072`)
+- `GEMINI_MODEL`
+- `GEMINI_FALLBACK_MODEL`
+- `GEMINI_RETRIES`
 
-### Límites
-- Texto por archivo procesado para contexto: hasta 30.000 caracteres.
-- Imágenes: hasta 6 MB cada una.
-- Imágenes enviadas en una petición: hasta 8 MB en total.
-- Hasta 4 imágenes por petición.
-- El Worker descarta cualquier adjunto que no sea imagen; PDF/DOCX/XLSX se envían como texto extraído.
+El modo `Auto` usa Gemini primero y puede pasar a OpenAI si Gemini falla. El selector `OpenAI` fuerza OpenAI. Las imágenes adjuntas se envían como entrada visual cuando el proveedor lo admite.
 
-### Worker
-El Worker acepta ahora `attachments` para visión multimodal. Gemini recibe las imágenes mediante `inline_data`; OpenAI, Anthropic y xAI reciben imágenes en sus formatos multimodales cuando esas claves están configuradas.
+La integración de OpenAI usa `/v1/responses`, la API recomendada actualmente para proyectos nuevos.
