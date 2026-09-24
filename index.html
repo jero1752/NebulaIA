@@ -2,11 +2,13 @@
 <html lang="es">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#10131a"><meta name="application-version" content="2.2.1-fix"><meta name="description" content="NebulaIA — chat, archivos, creación y edición asistida por IA">
+<meta name="theme-color" content="#10131a"><meta name="application-version" content="2.3-files"><meta name="description" content="NebulaIA — chat, archivos, creación y edición asistida por IA">
 <link rel="icon" href="./icon-192.png"><link rel="apple-touch-icon" href="./icon-192.png"><link rel="manifest" href="./manifest.json">
 <title>NebulaIA</title>
 <style>
 :root{--bg:#090b10;--panel:#11151d;--panel2:#171c26;--line:#252c38;--text:#f3f5f7;--muted:#9ba5b5;--accent:#8b7cff;--accent2:#5de1c4;--danger:#ff7272}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0,#1b1a36 0,#090b10 35%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;height:100vh;overflow:hidden}.app{display:grid;grid-template-columns:245px 1fr;height:100vh}.side{border-right:1px solid var(--line);background:#0c0f15;padding:18px;display:flex;flex-direction:column;gap:12px}.brand{font-size:22px;font-weight:800;letter-spacing:.3px}.brand span{color:var(--accent)}.sub{font-size:12px;color:var(--muted);margin-top:-8px}.nav button,.newchat{width:100%;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:11px;border-radius:11px;text-align:left;cursor:pointer;margin-top:6px}.nav button.active{border-color:#6259b8;background:#17152b}.newchat{background:var(--accent);color:#fff;border:0;font-weight:700}.status{margin-top:auto;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:12px;color:var(--muted)}main{display:flex;flex-direction:column;min-width:0}.top{height:64px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 24px}.top h1{font-size:18px;margin:0}.provider{background:var(--panel);border:1px solid var(--line);color:var(--text);border-radius:9px;padding:8px}.view{display:none;height:calc(100vh - 64px);overflow:auto}.view.active{display:flex;flex-direction:column}.chat{max-width:920px;width:100%;margin:auto;padding:28px 20px 150px}.msg{display:flex;margin:14px 0}.msg.user{justify-content:flex-end}.bubble{max-width:82%;padding:12px 15px;border-radius:16px;white-space:pre-wrap;line-height:1.5}.assistant .bubble{background:var(--panel);border:1px solid var(--line)}.user .bubble{background:#5148a8}.composer{position:fixed;bottom:0;left:245px;right:0;padding:16px;background:linear-gradient(transparent,var(--bg) 25%)}.compose-inner{max-width:920px;margin:auto;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:10px}.tools{display:flex;align-items:center;gap:10px;margin-bottom:8px;color:var(--muted);font-size:12px}.tools label{display:flex;align-items:center;gap:6px}.inputrow{display:flex;gap:8px}.inputrow textarea{flex:1;background:transparent;color:var(--text);border:0;outline:0;resize:none;min-height:48px;max-height:180px;padding:10px;font:inherit}.send{border:0;border-radius:12px;background:var(--accent);color:#fff;padding:0 18px;font-weight:700;cursor:pointer}.send:disabled{opacity:.55;cursor:not-allowed}.dropzone{border:1px dashed #3a4353;background:#0e1219;border-radius:18px;padding:30px;text-align:center;margin:25px auto;max-width:900px;width:calc(100% - 40px)}.dropzone input{display:none}.files{max-width:900px;width:calc(100% - 40px);margin:0 auto 40px}.filecard{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);background:var(--panel);padding:14px;border-radius:12px;margin:8px 0}.muted{color:var(--muted);font-size:13px}.actions{display:flex;gap:8px}.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:9px 12px;border-radius:9px;cursor:pointer}.create{max-width:900px;width:calc(100% - 40px);margin:28px auto}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.card{border:1px solid var(--line);background:var(--panel);border-radius:16px;padding:18px}.card h3{margin-top:0}.card button{width:100%;margin-top:12px}.editor{width:100%;min-height:220px;background:#0d1118;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:14px;resize:vertical}.toast{position:fixed;right:18px;top:76px;background:var(--panel2);border:1px solid var(--line);padding:11px 14px;border-radius:10px;display:none}.empty{color:var(--muted);text-align:center;padding:70px 20px}.spinner{opacity:.7;font-style:italic}@media(max-width:760px){.app{grid-template-columns:1fr}.side{display:none}.composer{left:0}.bubble{max-width:92%}.top{padding:0 14px}}
+
+.filemeta{display:flex;align-items:center;gap:10px;min-width:0}.filemeta>div{min-width:0}.badge{font-size:11px;border:1px solid var(--line);padding:4px 7px;border-radius:999px;color:var(--muted);white-space:nowrap}.badge.ok{border-color:#2f7f69;color:#75e0c2}.badge.bad{border-color:#7f3b3b;color:#ff9999}.danger{color:#ff9b9b}.filecard{gap:14px;flex-wrap:wrap}.filecard .actions{margin-left:auto}@media(max-width:760px){.filecard .actions{width:100%;margin-left:0}.filecard .actions .btn{flex:1}}
 </style>
 </head>
 <body>
@@ -14,40 +16,149 @@
 <aside class="side"><div class="brand">Nebula<span>IA</span></div><div class="sub">Tu espacio de IA personal</div><button class="newchat" id="newChat">＋ Nuevo chat</button><nav class="nav"><button data-view="chat" class="active">💬 Chat</button><button data-view="files">📁 Archivos</button><button data-view="create">✦ Crear documentos</button></nav><div class="status">⚡ Contexto optimizado<br><span>Usa solo lo necesario para ahorrar tokens.</span></div></aside>
 <main><header class="top"><h1 id="title">Chat</h1><select class="provider" id="provider"><option value="auto">Auto</option><option value="gemini">Gemini</option><option value="openai">OpenAI</option><option value="anthropic">Claude</option><option value="xai">Grok</option></select></header>
 <section id="chat" class="view active"><div id="messages" class="chat"><div class="empty">Hola. Soy <b>NebulaIA</b>.<br>Podés preguntarme, adjuntar archivos o crear documentos.</div></div><div class="composer"><div class="compose-inner"><div class="tools"><label>📎 <input id="attach" type="file" multiple accept=".txt,.md,.csv,.json,.pdf,.docx,.xlsx,.xls,.png,.jpg,.jpeg">Adjuntar</label><label><input id="search" type="checkbox"> Buscar en internet</label><span id="attachedCount"></span></div><div class="inputrow"><textarea id="input" placeholder="Escribí tu mensaje…" rows="1"></textarea><button class="send" id="send">Enviar</button></div></div></div></section>
-<section id="files" class="view"><div class="dropzone"><h2>📁 Centro de archivos</h2><p class="muted">TXT, MD, CSV, JSON, PDF, DOCX, XLSX e imágenes. Los archivos de texto se analizan directamente; los demás se procesan cuando el navegador dispone del lector correspondiente.</p><label class="btn">Seleccionar archivos<input id="fileInput" type="file" multiple accept=".txt,.md,.csv,.json,.pdf,.docx,.xlsx,.xls,.png,.jpg,.jpeg"></label></div><div id="fileList" class="files"></div></section>
+<section id="files" class="view"><div class="dropzone"><p class="muted">Arrastrá archivos aquí o seleccioná varios. Después podés <b>Abrir</b> o <b>Analizar</b> cada uno.</p><h2>📁 Centro de archivos</h2><p class="muted">TXT, MD, CSV, JSON, PDF, DOCX, XLSX e imágenes. NebulaIA extrae texto de TXT, MD, CSV, JSON, PDF, DOCX y XLSX. Las imágenes se envían al modelo con visión para analizarlas. Los originales se guardan localmente en el navegador.</p><label class="btn">Seleccionar archivos<input id="fileInput" type="file" multiple accept=".txt,.md,.csv,.json,.pdf,.docx,.xlsx,.xls,.png,.jpg,.jpeg"></label></div><div id="fileList" class="files"></div></section>
 <section id="create" class="view"><div class="create"><h2>✦ Crear</h2><p class="muted">Generá contenido con NebulaIA y descargalo en formatos comunes.</p><div class="grid"><div class="card"><h3>Documento / APA</h3><p class="muted">Pegá instrucciones y contenido. NebulaIA puede organizar portada, títulos, referencias y estructura solicitada.</p><textarea id="docPrompt" class="editor" placeholder="Ej.: crea un trabajo sobre... con estructura APA 7..."></textarea><button class="btn" id="generateDoc">Generar</button></div><div class="card"><h3>Descargar texto</h3><p class="muted">Convertí el resultado en TXT, Markdown o JSON.</p><div class="actions"><button class="btn" data-export="txt">TXT</button><button class="btn" data-export="md">MD</button><button class="btn" data-export="json">JSON</button></div></div><div class="card"><h3>DOCX</h3><p class="muted">Generá un .docx directamente desde NebulaIA, sin depender de una librería externa.</p><button class="btn" id="docxBtn">Descargar DOCX</button></div></div><textarea id="result" class="editor" style="margin-top:18px;min-height:360px" placeholder="Aquí aparecerá el documento generado…"></textarea></div></section>
 </main></div><div id="toast" class="toast"></div>
 <script>
-const WORKER_URL="https://nebula.jeronimocaroalfonso3.workers.dev";
-const KEY="nebulaHistoryV2", FILEKEY="nebulaFilesV2"; let history=JSON.parse(localStorage.getItem(KEY)||"[]"), files=JSON.parse(localStorage.getItem(FILEKEY)||"[]"), lastResult="";
-const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-function save(){localStorage.setItem(KEY,JSON.stringify(history.slice(-30)));localStorage.setItem(FILEKEY,JSON.stringify(files));}
-function toast(t){const x=$("#toast");x.textContent=t;x.style.display="block";setTimeout(()=>x.style.display="none",2200)}
-function bubble(role,text){const box=$("#messages");if(box.querySelector('.empty'))box.innerHTML="";const d=document.createElement('div');d.className='msg '+role;const b=document.createElement('div');b.className='bubble';b.textContent=text;d.appendChild(b);box.appendChild(d);box.scrollTop=box.scrollHeight;return b}
-function renderFiles(){const list=$("#fileList");list.innerHTML=files.length?files.map((f,i)=>`<div class="filecard"><div><b>${esc(f.name)}</b><div class="muted">${Math.round(f.size/1024)} KB · ${f.type||'archivo'}</div></div><button class="btn" onclick="removeFile(${i})">Eliminar</button></div>`).join(''):'<div class="empty">No hay archivos guardados en este dispositivo.</div>';$("#attachedCount").textContent=files.length?`${files.length} archivo(s) listo(s)`:''}
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-window.removeFile=i=>{files.splice(i,1);save();renderFiles();toast('Archivo eliminado')};
-const MAX_TEXT_FILE_MB=8;
-async function readFile(f){const ext=f.name.split('.').pop().toLowerCase();if(['txt','md','csv','json'].includes(ext)){if(f.size>MAX_TEXT_FILE_MB*1024*1024)return `[Archivo de texto demasiado grande (>${MAX_TEXT_FILE_MB}MB): no se cargó para evitar trabar el navegador.]`;return await f.text();}if(ext==='pdf')return '[PDF adjunto: para lectura completa se requiere un lector PDF en el navegador.]';if(['docx','xlsx','xls'].includes(ext))return '[Documento adjunto: el archivo está disponible, pero su contenido no fue extraído en este navegador.]';if(f.type.startsWith('image/'))return '[Imagen adjunta: se conserva como archivo, pero este MVP no hace visión por imagen.]';return '[Archivo adjunto]'}
-async function addFiles(list){let placeholders=0;for(const f of [...list]){const ext=f.name.split('.').pop().toLowerCase();if(!['txt','md','csv','json'].includes(ext))placeholders++;const text=await readFile(f);files.push({name:f.name,size:f.size,type:f.type,text:text.slice(0,12000)});}save();renderFiles();toast(placeholders?'Agregado(s). PDF/DOCX/XLSX/imágenes no se usan como contexto todavía':'Archivos agregados')}
-$("#attach").addEventListener('change',e=>{addFiles(e.target.files);e.target.value=''});$("#fileInput").addEventListener('change',e=>{addFiles(e.target.files);e.target.value=''});
+const WORKER_URL = "https://nebula.jeronimocaroalfonso3.workers.dev";
+const KEY = "nebulaHistoryV3";
+const FILEKEY = "nebulaFilesV3";
+const DB_NAME = "NebulaIAFilesV1";
+const DB_STORE = "blobs";
+const MAX_TEXT_FILE_MB = 12;
+const MAX_IMAGE_MB = 6;
+const MAX_CONTEXT_CHARS = 42000;
+const MAX_IMAGE_BYTES_TOTAL = 8 * 1024 * 1024;
+let history = JSON.parse(localStorage.getItem(KEY) || "[]");
+let files = JSON.parse(localStorage.getItem(FILEKEY) || "[]");
+let lastResult = "";
+let libs = {};
+
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+function save(){ localStorage.setItem(KEY, JSON.stringify(history.slice(-30))); localStorage.setItem(FILEKEY, JSON.stringify(files)); }
+function toast(t){ const x=$("#toast"); x.textContent=t; x.style.display="block"; clearTimeout(window.__toast); window.__toast=setTimeout(()=>x.style.display="none",2800); }
+function bubble(role,text){ const box=$("#messages"); if(box.querySelector('.empty')) box.innerHTML=""; const d=document.createElement('div'); d.className='msg '+role; const b=document.createElement('div'); b.className='bubble'; b.textContent=text; d.appendChild(b); box.appendChild(d); box.scrollTop=box.scrollHeight; return b; }
+function esc(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function openDB(){
+  return new Promise((resolve,reject)=>{
+    const r=indexedDB.open(DB_NAME,1);
+    r.onupgradeneeded=()=>{ if(!r.result.objectStoreNames.contains(DB_STORE)) r.result.createObjectStore(DB_STORE); };
+    r.onsuccess=()=>resolve(r.result); r.onerror=()=>reject(r.error);
+  });
+}
+async function dbPut(id,blob){ const db=await openDB(); return new Promise((res,rej)=>{const tx=db.transaction(DB_STORE,'readwrite');tx.objectStore(DB_STORE).put(blob,id);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);}); }
+async function dbGet(id){ const db=await openDB(); return new Promise((res,rej)=>{const tx=db.transaction(DB_STORE,'readonly');const q=tx.objectStore(DB_STORE).get(id);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error);}); }
+async function dbDelete(id){ const db=await openDB(); return new Promise((res,rej)=>{const tx=db.transaction(DB_STORE,'readwrite');tx.objectStore(DB_STORE).delete(id);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);}); }
+function fileId(){ return crypto.randomUUID ? crypto.randomUUID() : Date.now()+"-"+Math.random().toString(16).slice(2); }
+
+function renderFiles(){
+  const list=$("#fileList");
+  if(!files.length){ list.innerHTML='<div class="empty">No hay archivos guardados en este dispositivo.</div>'; }
+  else list.innerHTML=files.map((f,i)=>`<div class="filecard"><div class="filemeta"><div><b>${esc(f.name)}</b><div class="muted">${Math.max(1,Math.round(f.size/1024))} KB · ${esc(f.type||'archivo')}</div></div><span class="badge ${f.status==='ready'?'ok':f.status==='error'?'bad':''}">${esc(f.statusLabel||'guardado')}</span></div><div class="actions"><button class="btn" onclick="openFile(${i})">Abrir</button><button class="btn" onclick="analyzeFile(${i})">Analizar</button><button class="btn danger" onclick="removeFile(${i})">Eliminar</button></div></div>`).join('');
+  $("#attachedCount").textContent=files.length?`${files.length} archivo(s) disponible(s)`:'';
+}
+window.removeFile=async i=>{ const f=files[i]; files.splice(i,1); save(); renderFiles(); if(f?.id) await dbDelete(f.id).catch(()=>{}); toast('Archivo eliminado'); };
+window.openFile=async i=>{ try{const f=files[i], blob=await dbGet(f.id); if(!blob)return toast('No se encontró el archivo original'); const url=URL.createObjectURL(blob); const w=window.open(url,'_blank'); if(!w) toast('El navegador bloqueó la ventana'); setTimeout(()=>URL.revokeObjectURL(url),60000);}catch(e){toast('No se pudo abrir el archivo')}};
+window.analyzeFile=async i=>{ const f=files[i]; if(!f)return; switchView('chat'); const prompt=`Analiza el archivo "${f.name}". Describe qué contiene, resume sus puntos principales y señala datos o partes importantes. Si es una tabla, explica su estructura y hallazgos. Si es una imagen, describe lo visible sin inventar información.`; await ask(prompt,[f]); };
+
+function loadScript(url){ return new Promise((resolve,reject)=>{ const existing=[...document.scripts].find(s=>s.src===url); if(existing){ existing.dataset.loaded==='1'?resolve():existing.addEventListener('load',()=>resolve(),{once:true}); return; } const s=document.createElement('script'); s.src=url; s.async=true; s.onload=()=>{s.dataset.loaded='1';resolve();}; s.onerror=()=>reject(new Error('No se pudo cargar '+url)); document.head.appendChild(s); }); }
+async function loadLib(name){
+  if(libs[name]) return libs[name];
+  const urls={
+    pdf:["https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js","https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"],
+    mammoth:["https://unpkg.com/mammoth@1.8.0/mammoth.browser.min.js","https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"],
+    xlsx:["https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js","https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js"]
+  }[name]||[];
+  let last;
+  for(const url of urls){ try{await loadScript(url); last=null; break;}catch(e){last=e;} }
+  if(last) throw last;
+  if(name==='pdf'){ libs.pdf=window.pdfjsLib; if(libs.pdf) libs.pdf.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; }
+  if(name==='mammoth') libs.mammoth=window.mammoth;
+  if(name==='xlsx') libs.xlsx=window.XLSX;
+  if(!libs[name]) throw new Error('La librería '+name+' no está disponible.');
+  return libs[name];
+}
+
+async function extractPDF(file){
+  const pdf=await loadLib('pdf'); const buf=await file.arrayBuffer(); const doc=await pdf.getDocument({data:buf}).promise; const pages=[];
+  for(let n=1;n<=doc.numPages;n++){ const page=await doc.getPage(n); const c=await page.getTextContent(); pages.push(`--- Página ${n} ---\n${c.items.map(x=>x.str).join(' ')}`); }
+  return {text:pages.join('\n\n'), label:`PDF leído: ${doc.numPages} página(s)`};
+}
+async function extractDOCX(file){
+  const mammoth=await loadLib('mammoth'); const r=await mammoth.extractRawText({arrayBuffer:await file.arrayBuffer()}); return {text:r.value,label:'DOCX leído correctamente'};
+}
+async function extractXLSX(file){
+  const XLSX=await loadLib('xlsx'); const wb=XLSX.read(await file.arrayBuffer(),{type:'array'}); const chunks=[]; for(const name of wb.SheetNames){const csv=XLSX.utils.sheet_to_csv(wb.Sheets[name]);chunks.push(`--- Hoja: ${name} ---\n${csv}`);} return {text:chunks.join('\n\n'),label:`Hoja(s) leída(s): ${wb.SheetNames.length}`};
+}
+async function extractImage(file){
+  if(file.size>MAX_IMAGE_MB*1024*1024) throw new Error(`La imagen supera ${MAX_IMAGE_MB} MB.`);
+  return {text:'[Imagen lista para análisis visual por el modelo]',label:'Imagen lista para visión'};
+}
+async function extractFile(file){
+  const ext=file.name.split('.').pop().toLowerCase();
+  if(['txt','md','csv','json','log'].includes(ext)){ if(file.size>MAX_TEXT_FILE_MB*1024*1024) throw new Error(`El archivo supera ${MAX_TEXT_FILE_MB} MB.`); return {text:await file.text(),label:'Texto leído'}; }
+  if(ext==='pdf') return extractPDF(file);
+  if(ext==='docx') return extractDOCX(file);
+  if(['xlsx','xls'].includes(ext)) return extractXLSX(file);
+  if(file.type.startsWith('image/')) return extractImage(file);
+  throw new Error('Tipo de archivo no compatible.');
+}
+async function addFiles(list){
+  const arr=[...list]; if(!arr.length)return; let ok=0;
+  for(const f of arr){
+    const id=fileId(); const meta={id,name:f.name,size:f.size,type:f.type,createdAt:Date.now(),status:'processing',statusLabel:'procesando…',text:''};
+    files.push(meta); save(); renderFiles();
+    try{
+      await dbPut(id,f); const result=await extractFile(f); meta.text=result.text.slice(0,30000); meta.status='ready'; meta.statusLabel=result.label; meta.textChars=result.text.length; ok++;
+    }catch(e){ meta.status='error'; meta.statusLabel='no se pudo leer'; meta.text=`[No se pudo extraer el contenido: ${e.message}]`; }
+    save(); renderFiles();
+  }
+  toast(`${ok}/${arr.length} archivo(s) procesado(s)`);
+}
+$("#attach").addEventListener('change',e=>{addFiles(e.target.files);e.target.value=''});
+$("#fileInput").addEventListener('change',e=>{addFiles(e.target.files);e.target.value=''});
+
+function switchView(v){ const btn=$(`.nav button[data-view="${v}"]`); if(btn)btn.click(); }
 $$('.nav button').forEach(btn=>btn.addEventListener('click',()=>{const v=btn.dataset.view;$$('.nav button').forEach(x=>x.classList.toggle('active',x===btn));$$('.view').forEach(x=>x.classList.toggle('active',x.id===v));$("#title").textContent=v==='chat'?'Chat':v==='files'?'Archivos':'Crear documentos';}));
-$("#newChat").onclick=()=>{history=[];save();$("#messages").innerHTML='<div class="empty">Nuevo chat listo.</div>';toast('Nuevo chat')};
+$("#newChat").onclick=()=>{history=[];save();$("#messages").innerHTML='<div class="empty">Nuevo chat listo.</div>';toast('Nuevo chat');};
+
+async function imageAttachmentFor(f){
+  if(!f.type.startsWith('image/'))return null; if(f.size>MAX_IMAGE_MB*1024*1024)throw new Error(`La imagen ${f.name} supera ${MAX_IMAGE_MB} MB.`);
+  const blob=await dbGet(f.id); if(!blob)throw new Error(`No se encontró ${f.name}`); const buf=await blob.arrayBuffer(); let binary=''; const bytes=new Uint8Array(buf); const chunk=0x8000; for(let i=0;i<bytes.length;i+=chunk)binary+=String.fromCharCode(...bytes.subarray(i,i+chunk)); return {name:f.name,mimeType:f.type||'image/jpeg',data:btoa(binary)};
+}
+async function buildPayloadAttachments(selected){
+  const list=selected||files; const images=[]; let imageBytes=0; for(const f of list){ if(f.type?.startsWith('image/')){const size=f.size||0;if(imageBytes+size>MAX_IMAGE_BYTES_TOTAL)continue;const a=await imageAttachmentFor(f);images.push(a);imageBytes+=size;} }
+  return images;
+}
+function contextFrom(selected){ return (selected||files).map(f=>`### ${f.name}\n${f.text||''}`).join('\n\n').slice(0,MAX_CONTEXT_CHARS); }
+
+async function ask(message, selectedFiles){
+  const send=$("#send"); send.disabled=true; const context=contextFrom(selectedFiles); bubble('user',message); const wait=bubble('assistant','Analizando…'); wait.classList.add('spinner');
+  try{
+    const attachments=await buildPayloadAttachments(selectedFiles);
+    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,history:history.slice(-8),fileContext:context,attachments,useSearch:$("#search").checked,provider:$("#provider").value})});
+    const data=await res.json(); if(!res.ok)throw new Error(data.error||'Error del Worker'); wait.classList.remove('spinner'); wait.textContent=(data.recovered?'↻ ':'')+(data.reply||'Sin respuesta'); history.push({role:'user',text:message},{role:'assistant',text:data.reply||''}); save();
+  }catch(e){ wait.classList.remove('spinner'); wait.textContent='NebulaIA no pudo responder. '+e.message; } finally{send.disabled=false;}
+}
 const MAX_MESSAGE_CHARS=6000;
-async function ask(message){const send=$("#send");send.disabled=true;const context=files.map(f=>`### ${f.name}\n${f.text||''}`).join('\n').slice(0,28000);bubble('user',message);const wait=bubble('assistant','Pensando…');wait.classList.add('spinner');try{const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,history:history.slice(-8),fileContext:context,useSearch:$("#search").checked,provider:$("#provider").value})});const data=await res.json();if(!res.ok)throw new Error(data.error||'Error del Worker');wait.classList.remove('spinner');wait.textContent=(data.recovered?'↻ '+data.reply:data.reply)||'Sin respuesta';history.push({role:'user',text:message},{role:'assistant',text:data.reply||''});save();}catch(e){wait.classList.remove('spinner');wait.textContent='NebulaIA no pudo responder. '+e.message+'\n\nSi el modelo está saturado, Auto intentará otro proveedor configurado.'}finally{send.disabled=false}}
-$("#send").onclick=()=>{const i=$("#input"),m=i.value.trim();if(!m)return;if(m.length>MAX_MESSAGE_CHARS)return toast(`Mensaje muy largo (máx. ${MAX_MESSAGE_CHARS} caracteres)`);i.value='';ask(m)};$("#input").addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();$("#send").click()}});
-$("#generateDoc").onclick=async()=>{const p=$("#docPrompt").value.trim();if(!p)return toast('Escribí qué documento querés');$("#result").value='Generando…';await askForCreate(p)};
-async function askForCreate(p){try{const context=files.map(f=>`### ${f.name}\n${f.text||''}`).join('\n').slice(0,28000);const r=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:`Creá el documento solicitado. Entregá solo el contenido final, bien estructurado. Solicitud: ${p}`,history:[],fileContext:context,provider:$("#provider").value})});const d=await r.json();if(!r.ok)throw new Error(d.error);lastResult=d.reply||'';$("#result").value=lastResult;toast('Documento generado')}catch(e){$("#result").value='Error: '+e.message}}
-function download(name,type,text){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
-$$('[data-export]').forEach(b=>b.onclick=()=>{const t=$("#result").value||lastResult;if(!t)return toast('No hay resultado');const ext=b.dataset.export;if(ext==='json')download('nebula-documento.json','application/json',JSON.stringify({content:t},null,2));else download('nebula-documento.'+ext,ext==='txt'?'text/plain':'text/markdown',t)});
-function xmlEscape(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;')}
-function crc32(bytes){let table=crc32.table;if(!table){table=crc32.table=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1);table[n]=c>>>0}}let c=0xFFFFFFFF;for(const b of bytes)c=table[(c^b)&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0}
-function u16(n){return new Uint8Array([n&255,(n>>>8)&255])}
-function u32(n){return new Uint8Array([n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255])}
-function concatBytes(parts){let len=parts.reduce((n,p)=>n+p.length,0),out=new Uint8Array(len),o=0;for(const p of parts){out.set(p,o);o+=p.length}return out}
-function zipStore(entries){const enc=new TextEncoder(), locals=[], centrals=[];let offset=0;for(const [name,dataText] of entries){const nameB=enc.encode(name),data=enc.encode(dataText),crc=crc32(data);const local=concatBytes([u32(0x04034b50),u16(20),u16(0x0800),u16(0),u16(0),u16(0),u32(crc),u32(data.length),u32(data.length),u16(nameB.length),u16(0),nameB,data]);locals.push(local);const central=concatBytes([u32(0x02014b50),u16(20),u16(20),u16(0x0800),u16(0),u16(0),u16(0),u32(crc),u32(data.length),u32(data.length),u16(nameB.length),u16(0),u16(0),u16(0),u16(0),u32(0),u32(offset),nameB]);centrals.push(central);offset+=local.length}const cd=concatBytes(centrals),body=concatBytes(locals);const end=concatBytes([u32(0x06054b50),u16(0),u16(0),u16(entries.length),u16(entries.length),u32(cd.length),u32(body.length),u16(0)]);return new Blob([body,cd,end],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'})}
-function makeDocx(text){const lines=String(text).replace(/\r/g,'').split('\n');const paras=lines.map(line=>{const clean=line.trim();if(!clean)return '<w:p><w:pPr><w:spacing w:after="120"/></w:pPr></w:p>';let style='Normal',bold='';if(/^#{1,3}\s/.test(clean)){style='Heading'+Math.min(3,(clean.match(/^#+/)[0].length));line=clean.replace(/^#{1,3}\s*/,'');}if(/^\*\*.*\*\*$/.test(line.trim())){bold='<w:rPr><w:b/></w:rPr>';line=line.trim().slice(2,-2)}return '<w:p><w:pPr><w:pStyle w:val="'+style+'"/><w:spacing w:after="120"/></w:pPr><w:r>'+bold+'<w:t xml:space="preserve">'+xmlEscape(line)+'</w:t></w:r></w:p>'}).join('');const documentXml='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+paras+'<w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440"/></w:sectPr></w:body></w:document>';const styles='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="22"/></w:rPr></w:rPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style><w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:basedOn w:val="Normal"/><w:uiPriority w:val="9"/><w:qFormat/><w:rPr><w:b/><w:sz w:val="28"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Heading2"><w:name w:val="heading 2"/><w:basedOn w:val="Normal"/><w:uiPriority w:val="9"/><w:qFormat/><w:rPr><w:b/><w:sz w:val="24"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Heading3"><w:name w:val="heading 3"/><w:basedOn w:val="Normal"/><w:uiPriority w:val="9"/><w:qFormat/><w:rPr><w:b/><w:sz w:val="22"/></w:rPr></w:style></w:styles>';const ct='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>';const rels='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>';const docRels='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>';return zipStore([['[Content_Types].xml',ct],['_rels/.rels',rels],['word/document.xml',documentXml],['word/styles.xml',styles],['word/_rels/document.xml.rels',docRels]])}
-$("#docxBtn").onclick=async()=>{const text=$("#result").value||lastResult;if(!text)return toast('No hay resultado');try{const blob=makeDocx(text);const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='nebula-documento.docx';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast('DOCX creado correctamente')}catch(e){console.error(e);toast('No se pudo crear el DOCX')}};
+$("#send").onclick=()=>{const i=$("#input"),m=i.value.trim();if(!m)return;if(m.length>MAX_MESSAGE_CHARS)return toast(`Mensaje muy largo (máx. ${MAX_MESSAGE_CHARS} caracteres)`);i.value='';ask(m);};
+$("#input").addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();$("#send").click();}});
+
+$("#generateDoc").onclick=async()=>{const p=$("#docPrompt").value.trim();if(!p)return toast('Escribí qué documento querés');$("#result").value='Generando…';await askForCreate(p);};
+async function askForCreate(p){
+  try{const context=contextFrom(files);const attachments=await buildPayloadAttachments(files);const r=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:`Creá el documento solicitado. Entregá solo el contenido final, bien estructurado. Solicitud: ${p}`,history:[],fileContext:context,attachments,provider:$("#provider").value})});const d=await r.json();if(!r.ok)throw new Error(d.error||'Error del Worker');lastResult=d.reply||'';$("#result").value=lastResult;toast('Documento generado');}
+  catch(e){$("#result").value='Error: '+e.message;}
+}
+function download(name,type,text){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
+$$('[data-export]').forEach(b=>b.onclick=()=>{const t=$("#result").value||lastResult;if(!t)return toast('No hay resultado');const ext=b.dataset.export;if(ext==='json')download('nebula-documento.json','application/json',JSON.stringify({content:t},null,2));else download('nebula-documento.'+ext,ext==='txt'?'text/plain':'text/markdown',t);});
+function xmlEscape(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;');}
+function crc32(bytes){let table=crc32.table;if(!table){table=crc32.table=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1);table[n]=c>>>0;}}let c=0xFFFFFFFF;for(const b of bytes)c=table[(c^b)&255]^(c>>>8);return(c^0xFFFFFFFF)>>>0;}
+function u16(n){return new Uint8Array([n&255,(n>>>8)&255]);} function u32(n){return new Uint8Array([n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255]);} function concatBytes(parts){let len=parts.reduce((n,p)=>n+p.length,0),out=new Uint8Array(len),o=0;for(const p of parts){out.set(p,o);o+=p.length;}return out;}
+function zipStore(entries){const enc=new TextEncoder(),locals=[],centrals=[];let offset=0;for(const [name,dataText] of entries){const nameB=enc.encode(name),data=enc.encode(dataText),crc=crc32(data);const local=concatBytes([u32(0x04034b50),u16(20),u16(0x0800),u16(0),u16(0),u16(0),u32(crc),u32(data.length),u32(data.length),u16(nameB.length),u16(0),nameB,data]);locals.push(local);const central=concatBytes([u32(0x02014b50),u16(20),u16(20),u16(0x0800),u16(0),u16(0),u16(0),u16(0),u32(crc),u32(data.length),u32(data.length),u16(nameB.length),u16(0),u16(0),u16(0),u16(0),u32(0),u32(offset),nameB]);centrals.push(central);offset+=local.length;}const cd=concatBytes(centrals),body=concatBytes(locals);const end=concatBytes([u32(0x06054b50),u16(0),u16(0),u16(entries.length),u16(entries.length),u32(cd.length),u32(body.length),u16(0)]);return new Blob([body,cd,end],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});}
+function makeDocx(text){const lines=String(text).replace(/\r/g,'').split('\n');const paras=lines.map(line=>{const clean=line.trim();if(!clean)return '<w:p><w:pPr><w:spacing w:after="120"/></w:pPr></w:p>';let style='Normal',bold='';if(/^#{1,3}\s/.test(clean)){style='Heading'+Math.min(3,(clean.match(/^#+/)[0].length));line=clean.replace(/^#{1,3}\s*/,);}if(/^\*\*.*\*\*$/.test(line.trim())){bold='<w:rPr><w:b/></w:rPr>';line=line.trim().slice(2,-2);}return '<w:p><w:pPr><w:pStyle w:val="'+style+'"/><w:spacing w:after="120"/></w:pPr><w:r>'+bold+'<w:t xml:space="preserve">'+xmlEscape(line)+'</w:t></w:r></w:p>';}).join('');const documentXml='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+paras+'<w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440"/></w:sectPr></w:body></w:document>';const styles='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="22"/></w:rPr></w:rPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style><w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:basedOn w:val="Normal"/><w:qFormat/><w:rPr><w:b/><w:sz w:val="28"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Heading2"><w:name w:val="heading 2"/><w:basedOn w:val="Normal"/><w:qFormat/><w:rPr><w:b/><w:sz w:val="24"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Heading3"><w:name w:val="heading 3"/><w:basedOn w:val="Normal"/><w:qFormat/><w:rPr><w:b/><w:sz w:val="22"/></w:rPr></w:style></w:styles>';const ct='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>';const rels='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>';const docRels='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>';return zipStore([['[Content_Types].xml',ct],['_rels/.rels',rels],['word/document.xml',documentXml],['word/styles.xml',styles],['word/_rels/document.xml.rels',docRels]]);}
+$("#docxBtn").onclick=()=>{const text=$("#result").value||lastResult;if(!text)return toast('No hay resultado');try{const blob=makeDocx(text);const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='nebula-documento.docx';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast('DOCX creado correctamente');}catch(e){console.error(e);toast('No se pudo crear el DOCX');}};
 renderFiles();
-if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js');
+if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script></body></html>
