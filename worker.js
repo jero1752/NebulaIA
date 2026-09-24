@@ -17,7 +17,7 @@
 // EDITÁ ESTO: poné acá tu(s) dominio(s) reales si no vas a usar la variable
 // de entorno ALLOWED_ORIGINS en Cloudflare. Ejemplo:
 // ["https://tuusuario.github.io", "http://localhost:5500"]
-const DEFAULT_ALLOWED_ORIGINS = [];
+const DEFAULT_ALLOWED_ORIGINS = [https://jero1752.github.io/NebulaIA/];
 
 const DEFAULT_MODEL = "gemini-3.6-flash";
 const MAX_HISTORY = 8;
