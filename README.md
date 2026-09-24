@@ -1,4 +1,4 @@
-# NebulaIA v2.1
+# NebulaIA v2.2.1.1
 
 ## Frontend
 Subí el contenido de esta carpeta a GitHub Pages. El frontend ya apunta al Worker:

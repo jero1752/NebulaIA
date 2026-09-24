@@ -1,5 +1,24 @@
+// NebulaIA Worker v2.2
+// Secrets in Cloudflare: GEMINI_API_KEY (required), optional SEARCH_API_KEY + SEARCH_CX,
+// optional OPENAI_API_KEY, ANTHROPIC_API_KEY, XAI_API_KEY.
+// The frontend never receives these keys.
+//
+// NUEVO en v2.2:
+// - CORS restringido: solo responde con Access-Control-Allow-Origin a los
+//   orígenes listados en ALLOWED_ORIGINS (variable de entorno del Worker) o,
+//   si no está configurada, a los que pongas en DEFAULT_ALLOWED_ORIGINS abajo.
+//   Sin esto, cualquiera que tenga la URL del Worker puede llamarlo directo
+//   y gastar tu cuota de las APIs.
+// - Enmascarado de claves generalizado a todos los proveedores (antes solo
+//   cubría las claves de Gemini).
+// - Límite de tamaño en el mensaje del usuario (antes solo se limitaba el
+//   contexto de archivos).
 
+// EDITÁ ESTO: poné acá tu(s) dominio(s) reales si no vas a usar la variable
+// de entorno ALLOWED_ORIGINS en Cloudflare. Ejemplo:
+// ["https://tuusuario.github.io", "http://localhost:5500"]
 const DEFAULT_ALLOWED_ORIGINS = ["https://jero1752.github.io"];
+
 const DEFAULT_MODEL = "gemini-3.6-flash";
 const MAX_HISTORY = 8;
 const MAX_CONTEXT_CHARS = 28000;
@@ -131,6 +150,7 @@ function buildPrompt(message, fileContext, searchContext) {
 }
 
 function chooseProvider(requested, env) {
+  if (requested === "auto") return "auto";
   if (requested === "gemini" && env.GEMINI_API_KEY) return "gemini";
   if (requested === "openai" && env.OPENAI_API_KEY) return "openai";
   if (requested === "anthropic" && env.ANTHROPIC_API_KEY) return "anthropic";
